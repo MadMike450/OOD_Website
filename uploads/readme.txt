@@ -1,0 +1,1 @@
+This is where all product images are stored when a product is added to the website

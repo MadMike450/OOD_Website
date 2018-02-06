@@ -1,0 +1,1 @@
+This is where generated QR codes are stored
