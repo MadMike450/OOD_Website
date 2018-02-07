@@ -7,8 +7,10 @@ $conn = db_connector();
 
 
 // Variable, calculations, and queries for pagination below.
+$perPageDef  = 9;
+$perPageMax  = 9;
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$perPage     = isset($_GET['per-page']) && $_GET['per-page'] <= 10 ? (int)$_GET['per-page'] : 9;
+$perPage     = isset($_GET['per-page']) && $_GET['per-page'] <= $perPageMax ? (int)$_GET['per-page'] : $perPageDef;
 $startItem   = ($currentPage > 1) ? ($currentPage * $perPage) - $perPage : 0;
 
 // Query current page items
@@ -19,7 +21,7 @@ $sql = "SELECT   SQL_CALC_FOUND_ROWS *
 
 $results    = $conn->query($sql);
 $totalItems = $conn->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
-$totalPages = $totalItems > 0 ? ceil($totalItems/$perPage) : 5;
+$totalPages = $totalItems > 0 ? ceil($totalItems/$perPage) : 0;
 $prevPage   = $currentPage <= $totalPages ? $currentPage - 1 : $totalPages;
 $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 ?>
@@ -91,7 +93,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 						
 						<!--- Set up the Previous button --->
 						<li>
-							<?php if($currentPage > 1): ?>
+							<?php if($currentPage > 1 && $totalPages > 0): ?>
 							<a href="?page=<?php echo $prevPage ?>&per-page=<?php echo $perPage ?>" aria-label="Previous">
 								<span aria-hidden="false">&laquo;</span>
 							</a>
@@ -111,7 +113,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 						
 						<!-- Set up the Next button -->
 						<li>
-							<?php if($currentPage < $x - 1): ?>
+							<?php if($currentPage < $totalPages - 1 && $totalPages > 0): ?>
 							<a href="?page=<?php echo $nextPage ?>&per-page=<?php echo $perPage ?>" aria-label="Next">
 								<span aria-hidden="true">&raquo;</span>
 							</a>
