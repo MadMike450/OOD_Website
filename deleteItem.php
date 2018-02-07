@@ -1,7 +1,7 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ include 'includes/header.php';
 				die ("You must be logged in!");
 			}
 			?>
-			<a class="btn btn-default pull-left navbar-btn" href="./remove.php">Back</a>
+			<a class="btn btn-default pull-left navbar-btn" href="./deleteForm.php">Back</a>
 			<a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a>
 		</div>
 	</nav>
@@ -38,13 +38,9 @@ include 'includes/header.php';
 			<div class="row">
 				<div class="col-xs-12" style="margin-bottom:10px">	
 					<?php
-					//-------------connect to the database-------------
-					$servername = 'mysql.objectsofdesirefindlay.com';
-					$user       = 'jasrhu2';
-					$password   = 'QRcodes21';
-					$dbname     = 'qrusers';
 
-					$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+					// Connect to the database
+					$conn = db_connector();
 
 					$productID = $_GET['productID'];
 					
@@ -72,12 +68,12 @@ include 'includes/header.php';
 							echo"<h6 class='text-center'>$" . $row["price"] . "</h6>";
 							echo"<h6 class='text-center'>" . $row["shortDesc"] . "</h6>";
 							echo"<p>" . $row["longDesc"] . "</p>";
-							echo"<a class='btn btn-small btn-danger' onclick='return confirm('Remove this item?')' href='delete.php?del=$productID'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
+							echo"<a class='btn btn-small btn-danger' onclick='return confirm('Remove this item?')' href='deleteConfirm.php?del=$productID'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
 							echo"</div></div></div>";
 						}	
 					} 
 					else {
-						echo "0 results";
+						echo "<p class='text-center alert alert-warning'><center>0 results</center></p>";
 					}							
 					mysqli_close($conn); // close database connection
 					?>

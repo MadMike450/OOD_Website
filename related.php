@@ -1,11 +1,8 @@
 <?php
-//-------------connect to the database-------------
-$servername = 'mysql.objectsofdesirefindlay.com';
-$user       = 'jasrhu2';
-$password   = 'QRcodes21';
-$dbname     = 'qrusers';
+include 'functions/general.php';
 
-$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+// Connect to the database
+$conn = db_connector();
 	
 
 $page 		=	isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -47,7 +44,6 @@ $pages = ceil($total/$perPage);
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-include 'includes/head.php';
 include 'includes/header.php';
 ?>
 

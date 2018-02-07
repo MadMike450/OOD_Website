@@ -1,6 +1,6 @@
 <?php 
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
 ?>
 
 <!DOCTYPE html>
@@ -27,13 +27,8 @@ include 'includes/header.php';
 			<div class="row">
 				<div class="col-xs-12" style="margin-bottom:10px">	
 					<?php
-					//-------------connect to the database-------------
-					$servername = 'mysql.objectsofdesirefindlay.com';
-					$user       = 'jasrhu2';
-					$password   = 'QRcodes21';
-					$dbname     = 'qrusers';
-
-					$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+					// Connect to the database
+					$conn = db_connector();
 
 					$productID = $_GET['productID'];
 					

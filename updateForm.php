@@ -1,18 +1,13 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
 
 // gets the passed variable $edit and stores it into $id 
 $id = $_GET['edit'];    
 
-//-------------connect to the database-------------
-$servername = 'mysql.objectsofdesirefindlay.com';
-$user       = 'jasrhu2';
-$password   = 'QRcodes21';
-$dbname     = 'qrusers';
-
-$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");    
+// Connect to the database
+$conn = db_connector();   
 
 $query = "SELECT * 
 		  FROM	 products 

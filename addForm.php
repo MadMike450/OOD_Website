@@ -1,8 +1,9 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,32 +16,29 @@ include 'includes/header.php';
 					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
+			
 			<?php
 			if ($_SESSION['username'])
 				echo "<p class='navbar-text'>Welcome, " .$_SESSION['username']. "!</p>";
 			else{
 				echo "<a class='btn btn-default pull-left navbar-btn' href='./index.php'>Home</a>";
 				echo "<a class='btn btn-default pull-right navbar-btn' href='./loginPage.php'>Log In</a>";
-				die ("You must be logged in!");
+				die ("ERROR 888: You must be logged in!");
 			}
 			?>
+			
 			<a class="btn btn-default pull-left navbar-btn" href="./dashboard.php">Dashboard</a>
 			<a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a>
 		</div>
 	</nav>
 	
 	<?php
-	//-------------connect to the database-------------
-	$servername = 'mysql.objectsofdesirefindlay.com';
-	$user             = 'jasrhu2';
-	$password    = 'QRcodes21';
-	$dbname       = 'qrusers';
-
-	$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+	// Connect to the database
+	$conn = db_connector();
 	
 	// Retrieve the item tags.
 	$sql = "SELECT DISTINCT itemTag FROM products";
-	$itemTagArr = mysqli_query($conn, $sql);
+	$results = mysqli_query($conn, $sql);
 	?>
 	
 	<div id="main">
@@ -72,7 +70,6 @@ include 'includes/header.php';
 						<div class="form-group">
 							<input style="margin:20px; margin-left:0px" type="file" name="fileToUpload" id="fileToUpload">
 						</div>
-						
 						<div class="form-group">
 							<div class="row">
 								<div class="col-lg-6">
@@ -86,8 +83,8 @@ include 'includes/header.php';
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
-												<?php while($itemTag = mysqli_fetch_assoc($itemTagArr)){ ?>
-												<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:return false;"><?php echo $itemTag['itemTag']; ?></a></li>
+												<?php while($itemTag = mysqli_fetch_assoc($results)){ ?>
+													<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:return false;"><?php echo $itemTag['itemTag']; ?></a></li>
 												<?php } ?>
 											</ul>
 										</div><!-- /btn-group -->
@@ -95,7 +92,6 @@ include 'includes/header.php';
 								</div><!-- /.col-lg-6 -->
 							</div><!-- /.row -->
 						</div><!--form-group-->	
-						
 						<div class="form-group">
 							<input class="btn btn-info pull-left" type="submit" value="Submit">
 						</div>

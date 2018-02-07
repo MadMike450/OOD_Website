@@ -1,9 +1,12 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
 
-session_destroy();
+session_unset();
+
+$logoutOK  = session_destroy();
+$statusMsg = $logoutOK ? "You have been successfully logged out" : "Something went wrong while attempting to logout. Close your browser to ensure you are logged out.";
+
 ?>
 
 <!DOCTYPE html>
@@ -12,19 +15,26 @@ session_destroy();
 <div id="wrap">
 	<div id="main">
 		<div class="container">
-			
-			<h3>Dashboard</h3>
-
 			<div class="row">
-				<div class="col-md-12" style="margin-bottom:10px">
-					<p>You have been logged out.</p>
-				</div>
-				<div class="col-md-12" style="margin-bottom:10px">
-					<a href="loginPage.php" class="btn btn-primary btn-lg btn-block btn-huge">Log In Again</a>
-					<a href="index.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Home Page</a>
-				</div>
+				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-md-offset-4" style="margin-bottom:10px">
+					<?php
+					if ($logoutOK){
+						echo "<ul><h3 class='text-center alert alert-success'>" . $statusMsg . "</h3></ul>";
+					}
+					else{
+						echo "<ul><h4 class='text-center alert alert-danger'><strong>Error: </strong>" . $statusMsg . "</h4></ul>";
+					}
+					?>
 				
-			</div>	
+					<ul>
+						<a href="index.php?page=1" class="btn btn-primary btn-lg btn-huge btn-block">Home Page</a>
+					</ul>
+					<ul>
+						<a href="loginPage.php" class="btn btn-primary btn-lg btn-huge btn-block">Log In Again</a>
+					</ul>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

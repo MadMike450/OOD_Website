@@ -1,8 +1,10 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
+include 'includes/modalScript.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,13 +37,8 @@ include 'includes/header.php';
 			<center><h2>Download QR Codes</h2></center>
 			
 			<?php
-			//-------------connect to the database-------------
-			$servername = 'mysql.objectsofdesirefindlay.com';
-			$user       = 'jasrhu2';
-			$password   = 'QRcodes21';
-			$dbname     = 'qrusers';
-			
-			$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+			// Connect to the database
+			$conn = db_connector();
 
 			$page 		=	isset($_GET['page']) ? (int)$_GET['page'] : 1;
 			$perPage	= 	isset($_GET['per-page']) && $_GET['per-page'] <= 10 ? (int)$_GET['per-page'] : 5;
@@ -50,7 +47,6 @@ include 'includes/header.php';
 			$start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 			
 			//------------------- Redisplay all the products with the update info ---------------------
-			include('modalScript.php');
 			
 			//$query = "SELECT * FROM products ORDER BY title";
 			//Query

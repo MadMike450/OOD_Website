@@ -1,6 +1,5 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
 ?>
 
@@ -41,7 +40,7 @@ include 'includes/header.php';
 					<a href="addForm.php" class="btn btn-primary btn-lg btn-block btn-huge">Add Item</a>
 				</div>
 				<div class="col-md-4 col-md-offset-4" style="margin-bottom:10px">
-					<a href="remove.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Remove Item</a>
+					<a href="deleteForm.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Remove Item</a>
 				</div>
 				<div class="col-md-4 col-md-offset-4" style="margin-bottom:10px">
 					<a href="update.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Edit Item</a>

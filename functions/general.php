@@ -1,5 +1,13 @@
 <?php
-function sanitize($data) {
-	return mysql_real_escape_string($data);
+
+// Function to connect to my database.
+function db_connector(){
+	$servername = 'localhost';
+	$user       = 'root';
+	$password   = 'abc123';
+	$dbname     = 'qrusers';
+	
+	$conn = new mysqli($servername, $user, $password, $dbname) or die("ERROR in general.php db_connector function.  Unable to connect to the database");
+	return $conn;
 }
 ?>

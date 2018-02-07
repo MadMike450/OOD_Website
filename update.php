@@ -1,8 +1,8 @@
 <?php 
 session_start();
-include 'includes/head.php';
 include 'includes/header.php';
-include('modalScript.php');
+include 'functions/general.php';
+include 'includes/modalScript.php';
 ?>
 <?php
 			/*//-------------connect to the database-------------
@@ -65,13 +65,8 @@ include('modalScript.php');
 			<center><h2>Edit Item</h2></center>
 			
 			<?php
-			//-------------connect to the database-------------
-			$servername = 'mysql.objectsofdesirefindlay.com';
-			$user       = 'jasrhu2';
-			$password   = 'QRcodes21';
-			$dbname     = 'qrusers';
-			
-			$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+			// Connect to the database
+			$conn = db_connector();
 
 			$page 		=	isset($_GET['page']) ? (int)$_GET['page'] : 1;
 			$perPage	= 	isset($_GET['per-page']) && $_GET['per-page'] <= 10 ? (int)$_GET['per-page'] : 10;
@@ -199,108 +194,83 @@ include('modalScript.php');
 			
 			//$query = "SELECT * FROM products ORDER BY title";
 			//Query
-			 $sql = "SELECT  SQL_CALC_FOUND_ROWS productID, title 
-				FROM	products
-				ORDER BY title
-				LIMIT	{$start}, {$perPage}";
-
-
+			$sql = "SELECT   SQL_CALC_FOUND_ROWS productID, title 
+					FROM	 products
+					ORDER BY title
+					LIMIT	 {$start}, {$perPage}";
+			
 			$result = $conn->query($sql);
-			$total = $conn->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
-
-			$pages = ceil($total/$perPage);
+			$total  = $conn->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
+			$pages  = ceil($total/$perPage);
 			
 			//$eventRecords = mysql_query($query);
-			
 			?>    
+			
 			
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<tr>
-					<th>Title</th>
-					<th>Details</th>
-					<th>Edit</th>
+						<th>Title</th>
+						<th>Details</th>
+						<th>Edit</th>
 					</tr>
-				
 					<?php
 						if ($productRecords = $conn->query($sql)){
 							while($productArray = $productRecords->fetch_assoc()){
-								
 								echo "<tr>";
 								echo "<td>".$productArray['title']."</td>";
 								/*echo "<td>".$productArray['price']."</td>";
 								echo "<td>".$productArray['productID']."</td>";
 								echo "<td>".$productArray['shortDesc']."</td>";*/
-								
-								
 								echo "<td><center><a href='#' class='btn btn-info edit-record' data-toggle='modal' data-target='#myModal' data-id=".$productArray['productID']."><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></center></td>";
-								
-								
-								
-								
 								echo "<td><a class='btn btn-warning btn-xs' href='updateForm.php?edit=$productArray[productID]'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a></td>";
-								
 								echo "</tr>";
-
 							}//end while
 						}
 						$productRecords->free();
 						mysqli_close($conn); // close database connection
-						
 					?>
-					
 				</table>
-					
 			</div>
 		
 			<div>
 				<div class="text-center">
 					<ul class="pagination">
+						
 						<li>
-							
 							<?php
 							$firstPage    = 1;
-							$currentPage   = (int)$_GET['page'] ;
-							$previousPage  = $currentPage - 1;
+							$currentPage  = (int)$_GET['page'] ;
+							$previousPage = $currentPage - 1;
 							
 							if($currentPage > $firstPage):
-
 							?>
 								<a href="?page=<?php echo $previousPage ?>" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span></a>
-							
+								<span aria-hidden="true">&laquo;</span></a>							
 								<?php else: ?>
-							
 								<span class="disabled" aria-hidden="true">&laquo;</span>
-						
 							<?php endif; ?>
 						</li>
 						
 						<?php for($x = 1; $x <= $pages; $x++): ?>
-	   
 							<li <?php if($page === $x):?> class="active"<?php endif;?>>
-							
-								
-							
 								<a href="?page=<?php echo $x?>&per-page=<?php echo $perPage; ?>">
 								<?php echo $x?>
 								</a>
 							</li>
-	   
 						<?php endfor;?>
+						
 						<li>
 							<?php
 							$currentPage = (int)$_GET['page'];
 							$nextPage    = $page + 1;
 							if($currentPage < $x - 1): ?>
-							
-							  <a href="?page=<?php echo $nextPage ?>" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-							  </a>
-							  <?php else: ?>
-							  <span class="disabled" aria-hidden="true">&raquo;</span>
+								<a href="?page=<?php echo $nextPage ?>" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+								<?php else: ?>
+								<span class="disabled" aria-hidden="true">&raquo;</span>
 							<?php endif; ?>
 						</li>
+						
 					</ul>
 				</div>
 			</div>

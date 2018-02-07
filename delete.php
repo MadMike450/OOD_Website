@@ -4,8 +4,8 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-include 'includes/head.php';
 include 'includes/header.php';
+include 'functions/general.php';
 ?>
 
 <div id="wrap">
@@ -19,7 +19,7 @@ include 'includes/header.php';
 			</div>
 			<?php
 			if ($_SESSION['username'])
-				echo "<p class='navbar-text'>Welcome, " .$_SESSION['username']. "!</p>";
+				echo "<p class='navbar-text'>Welcome, " . $_SESSION['username']. "!</p>";
 			else{
 				echo "<a class='btn btn-default pull-left navbar-btn' href='./index.php'>Home</a>";
 				echo "<a class='btn btn-default pull-right navbar-btn' href='./loginPage.php'>Log In</a>";
@@ -37,15 +37,10 @@ include 'includes/header.php';
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3">
 					<?php
-					//-------------connect to the database-------------
-					$servername = 'mysql.objectsofdesirefindlay.com';
-					$user       = 'jasrhu2';
-					$password   = 'QRcodes21';
-					$dbname     = 'qrusers';
 
-					$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+					// Connect to the database
+					$conn = db_connector();
 					
-					//-------------delete record-----------------------
 					if (isset($_GET['del'])) {
 						$id       = $_GET['del'];
 						$imageSql = "SELECT imagePath, qrCodePath
@@ -54,44 +49,58 @@ include 'includes/header.php';
 						$sql      = "DELETE FROM products
 									 WHERE 	productID = " . $id;
 					}
-					
-					// remove image & QR code from server.
-					$query = mysqli_query($conn, $imageSql);
-					$results = $query->fetch_assoc();
-					$imagePath  = $results['imagePath'];
-					$qrCodePath = $results['qrCodePath'];
-					if ($query){
-						// remove product & image from database.
+
+					if ($results = mysqli_query($conn, $imageSql)){
+						$record = mysqli_fetch_assoc($results);
+						
+						// Remove product record from database
 						if (mysqli_query($conn, $sql)){
-							// Check if imagePath contains an image
-							if (strpos($imagePath, ".jpg") || strpos($imagePath, ".jpeg") || strpos($imagePath, ".png")){
-								unlink($imagePath);
-								unlink($qrCodePath);
-								echo '<p class="success">Product Deleted Successfully.</p>';
+							echo "<p class='text-center alert alert-success'><strong>Product Record Deleted Successfully.</strong></p>";
+							
+							// Remove QR code image from server
+							unlink($record['qrCodePath']);
+
+							// Verify this item isn't using the default "no image" picture. If it is then we do not need to remove a picture
+							//    for this item because one was not uploaded when the item was created.
+							if ($record['imagePath'] != "uploads/noimage.png" && $record['imagePath']) {
+									// Remove product image from server
+									unlink($record['imagePath']);
+									echo "<p class='text-center alert alert-success'>Product image deleted successfully.</p>";
 							}
-							else{
-								echo '<p class="success">Product deleted, but image was NOT removed from server.</p>';
+							else {
+								echo "<p class='text-center alert alert-success'><strong>Programmer Alert 0:</strong> No image was uploaded for this item, therefore no image was removed.</p>";
 							}
 						}
 						else {
-							// SQL query fail.
-							echo "<p>ERROR: Product SQL query failed.</p>";
+							echo "<p class='text-center alert alert-danger'><strong>Programmer Alert 1:</strong> Product SQL query failed.</p>";
+							echo "<p class='text-center alert alert-danger'><strong>ALERT 2:</strong> This item was NOT removed.</p>";
 						}
 					}
 					else {
-						echo "<p>ERROR: Image & QR Code path query failed.</p>";
+						echo "<p class='text-center alert alert-danger'><strong>Programmer Alert 2:</strong> Image & QR Code path query failed.</p>";
+						echo "<p class='text-center alert alert-danger'><strong>ALERT 1:</strong> This item was NOT removed.</p>";
 					}
-					$conn->close();
+					
+					
+					
+					if ($results) {
+						mysqli_free_result($results);
+						echo "<p>Results Freed</p>"; //testing only
+					}
+					if ($conn) {
+						mysqli_close($conn);
+						echo "<p>Connection Closed</p>"; //testing only
+					}
 					?>
 				</div>
 			</div>	
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3">
-					<a class="btn btn-info pull-left navbar-btn" href="remove.php">Remove Another Item</a>
+					<a class="btn btn-primary pull-left navbar-btn" href="deleteForm.php">Remove Another Item</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<?php include 'includes/footer.php';?>
+<?php include 'includes/footer.php'; ?>

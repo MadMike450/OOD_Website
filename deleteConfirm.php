@@ -1,37 +1,48 @@
-<!-- Modal Dialog -->
-<div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Delete Parmanently</h4>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure about this ?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" id="confirm">Delete</button>
-      </div>
-    </div>
-  </div>
+<?php 
+session_start();
+include 'includes/header.php';
+
+$productID = $_GET['del'];
+?>
+
+<!DOCTYPE html>
+<html lang="en"> 
+ 
+<div id="wrap">
+
+	<!-- header logo and buttons -->
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">
+					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+				</a>
+			</div>
+			<?php
+			if ($_SESSION['username'])
+				echo "<p class='navbar-text'>Logged in as: " . strtoupper($_SESSION['username']) . "</p>";
+			else{
+				echo "<a class='btn btn-default pull-left navbar-btn' href='./index.php'>Home</a>";
+				echo "<a class='btn btn-default pull-right navbar-btn' href='./loginPage.php'>Log In</a>";
+				die ("You must be logged in!");
+			}
+			?>
+			<!-- <a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a> -->
+		</div>
+	</nav>
+	
+	
+	<div id="main">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-sm-offset-3 col-md-offset-3" style="margin-bottom:10px">
+					<ul><h4 class='text-center alert alert-warning'>Are you sure you want to delete this item?</h4></ul>
+					<?php echo "<ul><a href='delete.php?del=" . $productID . "'class='btn btn-danger btn-lg btn-huge btn-block'>Delete</a></ul>"; ?>
+					<ul><a href="deleteForm.php" class="btn btn-default btn-lg btn-huge btn-block">Cancel</a></ul>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<!-- Dialog show event handler -->
-<script type="text/javascript">
-  $('#confirmDelete').on('show.bs.modal', function (e) {
-      $message = $(e.relatedTarget).attr('data-message');
-      $(this).find('.modal-body p').text($message);
-      $title = $(e.relatedTarget).attr('data-title');
-      $(this).find('.modal-title').text($title);
-
-      // Pass form reference to modal for submission on yes/ok
-      var form = $(e.relatedTarget).closest('form');
-      $(this).find('.modal-footer #confirm').data('form', form);
-  });
-
-  <!-- Form confirm (yes/ok) handler, submits form -->
-  $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
-      $(this).data('form').submit();
-  });
-</script>
+<?php include 'includes/footer.php';?>

@@ -1,20 +1,18 @@
 <?php
-	sleep(1);
-	//-------------connect to the database-------------
-	$servername = 'mysql.objectsofdesirefindlay.com';
-	$user       = 'jasrhu2';
-	$password   = 'QRcodes21';
-	$dbname     = 'qrusers';
-	
-	$conn = new mysqli($servername, $user, $password, $dbname) or die("Unable to connect to the database");
+include 'functions/general.php';
 
+sleep(1);
 
-	//--------------insert data--------------------
-	$productID  = $_POST['id'];
-	
-	$query = "SELECT * FROM products WHERE productID = $productID";
+// Connect to the database
+$conn = db_connector();
+
+//--------------insert data--------------------
+$productID  = $_POST['id'];
+
+$query = "SELECT * FROM products WHERE productID = $productID";
 
 ?>
+
 <div>
 	<?php 
 	if ($productRecord = $conn->query($query)){
