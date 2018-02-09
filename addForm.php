@@ -49,7 +49,7 @@ include 'functions/general.php';
 			<!-- product info form -->
 			<div class="row">
 				<div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-bottom:10px">
-					<form class="form-horizontal" action="addItem.php" method="POST" enctype="multipart/form-data" id="addItem"/>
+					<form class="form-horizontal" action="addRecord.php" method="POST" enctype="multipart/form-data" id="addItem"/>
 						<div class="form-group">
 							<label for="title">Title:</label><input class="form-control" type="text" id="title" name="title" required/>
 						</div>

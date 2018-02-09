@@ -37,7 +37,7 @@ $productID = $_GET['del'];
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-sm-offset-3 col-md-offset-3" style="margin-bottom:10px">
 					<ul><h4 class='text-center alert alert-warning'>Are you sure you want to delete this item?</h4></ul>
-					<?php echo "<ul><a href='delete.php?del=" . $productID . "'class='btn btn-danger btn-lg btn-huge btn-block'>Delete</a></ul>"; ?>
+					<?php echo "<ul><a href='deleteRecord.php?del=" . $productID . "'class='btn btn-danger btn-lg btn-huge btn-block'>Delete</a></ul>"; ?>
 					<ul><a href="deleteForm.php" class="btn btn-default btn-lg btn-huge btn-block">Cancel</a></ul>
 				</div>
 			</div>

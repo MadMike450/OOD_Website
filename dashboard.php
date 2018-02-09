@@ -43,7 +43,7 @@ include 'includes/header.php';
 					<a href="deleteForm.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Remove Item</a>
 				</div>
 				<div class="col-md-4 col-md-offset-4" style="margin-bottom:10px">
-					<a href="update.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Edit Item</a>
+					<a href="editItems.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Edit Item</a>
 				</div>
 				<div class="col-md-4 col-md-offset-4" style="margin-bottom:10px">
 					<a href="QRDownload.php?page=1" class="btn btn-primary btn-lg btn-block btn-huge">Download QR Codes</a>
