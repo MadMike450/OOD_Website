@@ -39,7 +39,7 @@ include 'includes/phpqrcode/qrlib.php';
 			$conn = db_connector();
 			
 			// This variable is just an on off switch for a feature. This feature will automatically modify the file name of an image the user is trying to upload
-			//   if a file already exist on the server with that name. (On = 1 : Off = 2)
+			//   if a file already exist on the server with that name. (On = 1 : Off = 0)
 			$autoChgImageName = 1;
 			
 			// error checking for adding the product and for uploading the file.
@@ -50,10 +50,12 @@ include 'includes/phpqrcode/qrlib.php';
 			// 1 = yes , 0 = no
 			$QRCodeCreated = 1;
 			
+			// Default path for image uploads
+			$defaultImageDir = "uploads/";
+			
 			// If no picture is selected for the item then we will use a default
 			//   image that says "no image available."
-			$defaultImage = "noimage.png";
-			$defaultImagePath = "uploads/noimage.png";
+			$defaultImagePath = $defaultImageDir . "noimage.png";
 			
 			
 			
@@ -64,7 +66,7 @@ include 'includes/phpqrcode/qrlib.php';
 			$longDesc  = mysqli_real_escape_string($conn, $_POST["detailed"]);
 			$imageName = mysqli_real_escape_string($conn, $_FILES["fileToUpload"]["name"]);
 			if($imageName){
-				$imagePath = "uploads/" . $imageName;
+				$imagePath = $defaultImageDir . $imageName;
 			}
 			else{
 				$imagePath = $defaultImagePath;
@@ -137,46 +139,41 @@ include 'includes/phpqrcode/qrlib.php';
 			
 			//--------------------- Upload the image to the uploads folder ---------------------------
 			// if no image was selected then do not attempt an upload.
-			if ($imageName && $imageName !== $defaultImage){
-				$target_dir    = "uploads/";
-				$imageFilename = basename($_FILES["fileToUpload"]["name"]);
-				$targetFile   = $target_dir . $imageFilename;
-				$imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+			if ($imageName){
 				
-				// CHECK #1: Check if image file is actually an image or fake image.
-				if(isset($_POST["submit"])){
-					$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-					if($check !== false){
-						echo "<p class='alert alert-success'>File is an image - " . $check["mime"] . ".</p>";
-						$uploadOk = 1;
-					} else {
-						echo "<p class='alert alert-danger'>ALERT 3: File is not an image.</p>";
-						$uploadOk = 0;
-					}
+				// CHECK #1: Check if image file is actually an image.
+				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+				if($check !== false){
+					//echo "<p class='alert alert-success'>File is an image - <strong>" . $check["mime"] . "</strong></p>";
+					$uploadOk = 1;
+				} else {
+					echo "<p class='alert alert-danger'>ALERT 3: File is not an image.</p>";
+					$uploadOk = 0;
 				}
+				
 				
 				// CHECK #2: Check if an image with this file name already exist on the server.
 				if ($autoChgImageName){
 					// Auto change the image name if an image with the same file name already exist on the server.
-					if (file_exists($targetFile)) {
+					if (file_exists($imagePath)) {
 						$i = 0;
-						$newTargetFile = $targetFile;
+						$newTargetFile = $imagePath;
 						while (file_exists($newTargetFile)){
 							$i++;
-							$tempExt  = explode('.', $imageFilename);
+							$tempExt  = explode('.', $imageName);
 							$tempExt  = end($tempExt);
-							$tempName = explode('.', $imageFilename, -1);
+							$tempName = explode('.', $imageName, -1);
 							$newFilename = "";
-							foreach ($tempName AS $str)
+							foreach ($tempName AS $str) // Put the file name back together
 								$newFilename = $newFilename . $str;
 							$newFilename = $newFilename . "(" . $i . ")." . $tempExt;
-							$newTargetFile = "uploads/" . $newFilename;
+							$newTargetFile = $defaultImageDir . $newFilename;
 						}
 						echo "<p>Your new file name is <strong>" . $newFilename . "</strong></p>";
-						$targetFile = $newTargetFile;
+						$imagePath = $newTargetFile;
 						
 						$sql = "UPDATE products
-								SET    imagePath = '$targetFile'
+								SET    imagePath = '$imagePath'
 								WHERE  productID = '$productID'";
 						if (!mysqli_query($conn, $sql)) {
 							$uploadOK = 0;
@@ -185,11 +182,12 @@ include 'includes/phpqrcode/qrlib.php';
 					}
 				}
 				else { // Do not auto modify the image name. Do not upload the image and display an error to the user.
-					if (file_exists($targetFile)){
-						echo "<p class='alert alert-danger'>ALERT 4: An image with the name <strong>" . $imageFilename . "</strong> already exists.</p>";
+					if (file_exists($imagePath)){
+						echo "<p class='alert alert-danger'>ALERT 4: An image with the name <strong>" . $imageName . "</strong> already exists.</p>";
 						$uploadOk = 0;
 					}
 				}
+				
 				
 				// CHECK #3: Check file size - unit is in bytes (5MB).
 				if ($_FILES["fileToUpload"]["size"] > 5000000){
@@ -197,18 +195,21 @@ include 'includes/phpqrcode/qrlib.php';
 					$uploadOk = 0;
 				}
 				
+				
 				// CHECK #4: Limit the type of file formats.
+				$imageFileType = pathinfo($imagePath, PATHINFO_EXTENSION);
 				if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"){
 					echo "<p class='alert alert-danger'>ALERT 6: Only JPG, JPEG, and PNG images are allowed.</p>";
 					$uploadOk = 0;
 				}
+				
 				
 				// Check if $uploadOk has been set to 0 by an error.
 				if ($uploadOk === 0){
 					echo "<p class='alert alert-danger'>ALERT 7: Your image was not uploaded.</p>";
 				}
 				else{ // If everything is ok, try to upload file.
-					if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetFile)){
+					if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imagePath)){
 						// No need to tell the user this succeeded, only if it failed.
 						//echo "<p>The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.</p>";
 					} 

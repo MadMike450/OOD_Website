@@ -87,19 +87,22 @@ include 'functions/general.php';
 													<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:return false;"><?php echo $itemTag['itemTag']; ?></a></li>
 												<?php } ?>
 											</ul>
-										</div><!-- /btn-group -->
-									</div><!-- /input-group -->
-								</div><!-- /.col-lg-6 -->
-							</div><!-- /.row -->
+										</div><!-- btn-group -->
+									</div><!-- input-group -->
+								</div><!-- col-lg-6 -->
+							</div><!-- row -->
 						</div><!--form-group-->	
 						<div class="form-group">
 							<input class="btn btn-info pull-left" type="submit" value="Submit">
 						</div>
 					</form>	
-				</div>
-			</div>	
-		</div>
-	</div>
+				</div><!-- col -->
+			</div><!-- row -->
+		</div><!-- container -->
+	</div><!-- main -->
+
+	
+<!-- Populate itemTag field with selected value from dropdown menu -->
 <script src="jquery/jquery.js"></script>
 <script type="text/javascript" src='js/bootstrap.min.js'></script>
 <script>

@@ -49,21 +49,31 @@ $conn = db_connector();
 					// - 
 					// - 
 					
+					// error checking for adding the product and for uploading the file.
+					// 1 = ok , 0 = error
+					$uploadOk = 1;
+					
+					// This variable is just an on off switch for a feature. This feature will automatically modify the file name of an image the user is trying to upload
+					//   if a file already exist on the server with that name. (On = 1 : Off = 0)
+					$autoChgImageName = 1;
+					
+					// Default path for image uploads
+					$defaultImageDir = "uploads/";
 					
 					// This variable holds the default image path string. This image is only used if no image was selected
 					//    when the item was added.
-					$defaultImagePath = "uploads/noimage.png";
+					$defaultImagePath = $defaultImageDir . "noimage.png";
 					
 					
 					//-------------------- Populate variables from edit form --------------------
-					$nProductID  = $_POST['productID'];
-					$nTitle      = $_POST['title'];
-					$nPrice      = $_POST['price'];
-					$nShortDesc  = $_POST['shortDesc'];
-					$nLongDesc   = $_POST['longDesc'];
-					$nImageName  = $_FILES["fileToUpload"]["name"];
-					$nQRCodePath = $_POST['qrtitle'];
-					$nItemTag    = $_POST['itemTag'];
+					$nProductID  = (int)$_POST['productID'];
+					$nTitle      = mysqli_real_escape_string($conn, $_POST['title']);
+					$nPrice      = (int)$_POST['price'];
+					$nShortDesc  = mysqli_real_escape_string($conn, $_POST['shortDesc']);
+					$nLongDesc   = mysqli_real_escape_string($conn, $_POST['longDesc']);
+					$nImageName  = mysqli_real_escape_string($conn, $_FILES["fileToUpload"]["name"]);
+					$nQRCodePath = mysqli_real_escape_string($conn, $_POST['qrtitle']);
+					$nItemTag    = mysqli_real_escape_string($conn, $_POST['itemTag']);
 					
 					
 					//-------------------- Retrieve the old image path. --------------------
@@ -71,7 +81,7 @@ $conn = db_connector();
 					// image if a new one is uploaded.
 					$imgQuery = "SELECT imagePath
 								 FROM	products
-								 WHERE	title = '" . $nTitle . "'";
+								 WHERE	productID = " . $nProductID;
 					if ($imgResults = mysqli_query($conn, $imgQuery)){
 						$imagePath  = mysqli_fetch_assoc($imgResults);
 						$imagePath  = $imagePath['imagePath'];
@@ -89,10 +99,16 @@ $conn = db_connector();
 						if ($imagePath && $imagePath !== $defaultImagePath){
 							// If the default image was used for this item then there is no
 							// need to remove an image from server.
-							unlink($imagePath);
+							if (file_exists($imagePath)){
+								unlink($imagePath);
+							}
+							else {
+								// Image not found on server, image not removed. (image probably does not exist, so no real issue here).
+								echo "<p class='text-center alert alert-warning'><strong>WARNING: </strong>The original image was not removed from the server because the image was not found.</p>";
+							}
 						}
 						$newImage  = 1;
-						$imagePath = "uploads/" . $nImageName;
+						$imagePath = $defaultImageDir . $nImageName;
 					}
 					else {
 						// Using the same image.
@@ -101,42 +117,71 @@ $conn = db_connector();
 					
 					
 					//----------------------- Upload the new image to the uploads folder ------------------------------------------
-					$uploadOk = 1;
 					// Do not need to perform upload if original image is used.
 					if ($newImage){
-						$target_dir = "uploads/";
-						$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-						$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 						
-						// Check if image file is actually an image or fake image.
-						if(isset($_POST["submit"])){
-							$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-							if($check !== false){
-								echo "<p>File is an image - " . $check["mime"] . ".</p>";
-								$uploadOk = 1;
-							} else {
-								echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>File is not an image.</p>";
+						// CHECK #1: Check if image file is actually an image or fake image.
+						$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+						if($check !== false){
+							//echo "<p class='alert alert-success'>File is an image - <strong>" . $check["mime"] . "</strong></p>";
+							$uploadOk = 1;
+						} else {
+							echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>File is not an image.</p>";
+							$uploadOk = 0;
+						}
+						
+						
+						// CHECK #2: Check if an image with this file name already exist on the server.
+						if ($autoChgImageName){
+							// Auto change the image name if an image with the same file name already exist on the server.
+							if (file_exists($imagePath)) {
+								$i = 0;
+								$newTargetFile = $imagePath;
+								while (file_exists($newTargetFile)){
+									$i++;
+									$tempExt  = explode('.', $nImageName);
+									$tempExt  = end($tempExt);
+									$tempName = explode('.', $nImageName, -1);
+									$newFilename = "";
+									foreach ($tempName AS $str) // Put the file name back together
+										$newFilename = $newFilename . $str;
+									$newFilename = $newFilename . "(" . $i . ")." . $tempExt;
+									$newTargetFile = $defaultImageDir . $newFilename;
+								}
+								echo "<p class='text-center alert alert-warning'>Your new file name is <strong>" . $newFilename . "</strong></p>";
+								$imagePath = $newTargetFile;
+								
+								$sql = "UPDATE products
+										SET    imagePath = '$imagePath'
+										WHERE  productID = '$nProductID'";
+								if (!mysqli_query($conn, $sql)) {
+									$uploadOK = 0;
+									echo "<p class='alert alert-danger'>Programmer Alert 3: Update query failed to modify the image path to reflect the new file name (<strong>" . $newFilename . "</strong>)</p>";
+								}
+							}
+						}
+						else { // Do not auto modify the image name. Do not upload the image and display an error to the user.
+							if (file_exists($imagePath)){
+								echo "<p class='alert alert-danger'>ALERT 4: An image with the name <strong>" . $nImageName . "</strong> already exists.</p>";
 								$uploadOk = 0;
 							}
 						}
 						
-						// Check if file already exists.
-						if (file_exists($target_file)){
-							echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>File already exists.</p>";
-							$uploadOk = 0;
-						}
 						
-						// Check file size - unit is in bytes (5MB).
+						// CHECK #3: Check file size - unit is in bytes (5MB).
 						if ($_FILES["fileToUpload"]["size"] > 5000000){
 							echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>Your file is above the 5MB limit.</p>";
 							$uploadOk = 0;
 						}
 						
-						// Limit the type of file formats.
-						if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"){
+						
+						// CHECK #4: Limit the type of file formats.
+						$imageFileExt = pathinfo($imagePath,PATHINFO_EXTENSION);
+						if($imageFileExt != "jpg" && $imageFileExt != "png" && $imageFileExt != "jpeg"){
 							echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>Only JPG, JPEG, and PNG files are allowed.</p>";
 							$uploadOk = 0;
 						}
+						
 						
 						// Check if $uploadOk has been set to 0 by an error.
 						if ($uploadOk == 0){
@@ -144,9 +189,10 @@ $conn = db_connector();
 						} 
 						// If everything is ok, try to upload file.
 						else {
-							if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)){
-								// No need to tell the user this succeeded, only if it failed.
-								//echo "<p>The file " . basename( $_FILES["fileToUpload"]["name"]) . " has been uploaded.</p>";
+							if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imagePath)){
+								// This alert is kind of necessary when doing an EDIT because it will say 0 rows updated if the only thing you updated is the image. This would
+								//    would be very misleading to the end users. Now at least it will inform them the image uploaded successfully.
+								echo "<p class='text-center alert alert-success'>The new image file <strong>" . $nImageName . "</strong> has been uploaded successfully.</p>";
 							} 
 							else {
 								echo "<p class='text-center alert alert-danger'><strong>Programmer Error 8: </strong>There was an error uploading your file.</p>";
