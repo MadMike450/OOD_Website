@@ -42,11 +42,13 @@ $conn = db_connector();
 					<?php
 					// PROCESS FLOW:
 					// - Populate variables with values from the form ("n" at the beginning of variables means "new" value)
-					// - Get the current (old) image path/name
+					// - Get the current (old) image path/name (before that value is over written)
 					// - Remove the current (old) image from the server
-					// - 
-					// - 
-					// - 
+					// - Verify the new upload image is actually an image
+					// - Check if an image with this file name already exist on the server
+					// - Check if the file size is above the max (5MB)
+					// - Check the image file type
+					// - Upload the image
 					// - 
 					
 					// error checking for adding the product and for uploading the file.
@@ -168,7 +170,7 @@ $conn = db_connector();
 						}
 						
 						
-						// CHECK #3: Check file size - unit is in bytes (5MB).
+						// CHECK #3: Check if the file size is above the max (5MB).
 						if ($_FILES["fileToUpload"]["size"] > 5000000){
 							echo "<p class='text-center alert alert-danger'><strong>ERROR: </strong>Your file is above the 5MB limit.</p>";
 							$uploadOk = 0;
