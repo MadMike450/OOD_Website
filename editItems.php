@@ -64,20 +64,20 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<tr>
-						<th>Title</th>
-						<th>Details</th>
-						<th>Edit</th>
+						<th class='col-md-10'>Title</th>
+						<th class='col-md-1'><center>Details</center></th>
+						<th class='col-md-1'><center>Edit</center></th>
 					</tr>
 					<?php
 						if ($results){
 							foreach($results as $result){
 								echo "<tr>";
-								echo "<td>".$result['title']."</td>";
+								echo "<td class='col-md-10'>".$result['title']."</td>";
 								/*echo "<td>".$result['price']."</td>";
 								echo "<td>".$result['productID']."</td>";
 								echo "<td>".$result['shortDesc']."</td>";*/
-								echo "<td><center><a href='#' class='btn btn-info edit-record' data-toggle='modal' data-target='#myModal' data-id=".$result['productID']."><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></center></td>";
-								echo "<td><a class='btn btn-warning btn-xs' href='editForm.php?edit=$result[productID]'><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a></td>";
+								echo "<td class='col-md-1'><center><a href='#' class='btn btn-info edit-record' data-toggle='modal' data-target='#myModal' data-id=".$result['productID']."><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></center></td>";
+								echo "<td class='col-md-1'><center><a class='btn btn-warning' href='editForm.php?edit=$result[productID]'>Edit</a></center></td>";
 								echo "</tr>";
 							}//end foreach
 						}

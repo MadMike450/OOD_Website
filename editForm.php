@@ -42,6 +42,7 @@ $itemTagArr = mysqli_query($conn, $sql);
 				die ("You must be logged in!");
 			}
 			?>
+			<a class="btn btn-default pull-left navbar-btn" href="./editItems.php">Back</a>
 			<a class="btn btn-default pull-left navbar-btn" href="./dashboard.php">Dashboard</a>
 			<a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a>
 		</div>
