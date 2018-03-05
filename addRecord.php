@@ -35,6 +35,9 @@ include 'includes/phpqrcode/qrlib.php';
 	<div class="row">
 		<div class="text-center col-xs-12 col-sm-12 col-md-4 col-lg-4 col-md-offset-4" style="margin-bottom:10px">
 			<?php
+			// Display (1) or hide (0) debug alerts.  For testing only.
+			$debugAlerts = 1;
+			
 			// Connect to the database
 			$conn = db_connector();
 			
@@ -91,8 +94,9 @@ include 'includes/phpqrcode/qrlib.php';
 			else {
 				// SQL query fail.
 				// New Feature: create a log file and write these kind of technical errors to the log.  Then just display an error saying to contact your systems administrator.
-				echo "<p class='alert alert-danger'>Programmer Alert 1: " . $sql . "<br>" . mysqli_error($conn) . "</p>";
-				//echo "<p class='text-center alert alert-danger'>File will not be uploaded.</p>";
+				if($debugAlerts)
+					echo "<p class='alert alert-danger'>Debug Alert 5: SQL query failed.  The record was not uploaded." . <br> . $sql . "<br>" . mysqli_error($conn) . "</p>";
+				echo "<p class='alert alert-danger'>Error 5: The record was not uploaded.</p>";
 				$uploadOk = 0;
 			}
 			
@@ -118,19 +122,22 @@ include 'includes/phpqrcode/qrlib.php';
 				}
 				else {
 					$QRCodeCreated = 0;
-					echo "<p class='alert alert-danger'>ALERT 1: Cannot create QR code because there was an error adding the product.</p>";
+					echo "<p class='alert alert-danger'>Error 10: A QR code was not created because there was an error adding the product.</p>";
 				}
 			}
 			else {
 				$QRCodeCreated = 0;
-				echo "<p class='alert alert-warning'>ALERT 2: A QR code already exist with the title <strong>" . $QRCodeName . "</strong>. A QR code was NOT created for this item.</p>";
+				echo "<p class='alert alert-warning'>Error 15: A QR code was NOT created for this item because one already exist with the title <strong>" . $QRCodeName . "</strong></p>";
+				
+				// NEW FEATURE - remove the entire record and do not continue on because we couldn't create the QR code (and thats the entire point of this website).
 				
 				// Remove the QR code path since no QR code was created.
 				$sql = "UPDATE products 
 						SET    qrCodePath = ''
 						WHERE  productID = '$productID'";
 				if (!mysqli_query($conn, $sql)){
-					echo "<p class='alert alert-danger'>Programmer Alert 2: A QR code file path is erroneously attached to this item and the system failed to remove it.</p>";
+					if($debugAlerts)
+						echo "<p class='alert alert-danger'>Debug Alert 10: A QR code file path is erroneously attached to this item and the system failed to remove it.</p>";
 				}
 				
 			}
@@ -141,13 +148,23 @@ include 'includes/phpqrcode/qrlib.php';
 			// if no image was selected then do not attempt an upload.
 			if ($imageName){
 				
+				// This debug alert is useful for catching when the upload_max_filesize is set too small in the php.ini file.
+				if($debugAlerts){
+					if($_FILES["fileToUpload"]["name"] && !$_FILES["fileToUpload"]["tmp_name"]){
+						echo "<p class='alert alert-danger'>Programmer Alert 3-1: FILES[name] = <strong>" . $_FILES["fileToUpload"]["name"] . "</strong></p>";
+						echo "<p class='alert alert-danger'>Programmer Alert 3-2: FILES[tmp_name] = <strong>" . $_FILES["fileToUpload"]["tmp_name"] . "</strong></p>";
+						echo "<p class='alert alert-danger'>Programmer Alert 3-3: FILES[name] is populated, but FILES[tmp_name] is empty.  This is probably because your upload_max_filesize is set to small in the php.ini file.</p>";
+					}
+				}
+				
 				// CHECK #1: Check if image file is actually an image.
 				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 				if($check !== false){
-					//echo "<p class='alert alert-success'>File is an image - <strong>" . $check["mime"] . "</strong></p>";
+					if($debugAlerts)
+						echo "<p class='alert alert-success'>Debug Alert 15: File is an image - <strong>" . $check["mime"] . "</strong></p>";
 					$uploadOk = 1;
 				} else {
-					echo "<p class='alert alert-danger'>ALERT 3: File is not an image.</p>";
+					echo "<p class='alert alert-danger'>Error 20: The selected file is not an image.</p>";
 					$uploadOk = 0;
 				}
 				
@@ -169,7 +186,8 @@ include 'includes/phpqrcode/qrlib.php';
 							$newFilename = $newFilename . "(" . $i . ")." . $tempExt;
 							$newTargetFile = $defaultImageDir . $newFilename;
 						}
-						echo "<p>Your new file name is <strong>" . $newFilename . "</strong></p>";
+						if($debugAlerts)
+							echo "<p class='alert alert-warning'>The image file has been renamed to avoid duplicate file names.  The new file name is <strong>" . $newFilename . "</strong></p>";
 						$imagePath = $newTargetFile;
 						
 						$sql = "UPDATE products
@@ -177,13 +195,14 @@ include 'includes/phpqrcode/qrlib.php';
 								WHERE  productID = '$productID'";
 						if (!mysqli_query($conn, $sql)) {
 							$uploadOK = 0;
-							echo "<p class='alert alert-danger'>Programmer Alert 3: Update query failed to modify the image path to reflect the new file name (<strong>" . $newFilename . "</strong>)</p>";
+							if($debugAlerts)
+								echo "<p class='alert alert-danger'>Debug Alert 20: The update query failed to modify the image path to reflect the new file name (<strong>" . $newFilename . "</strong>)</p>";
 						}
 					}
 				}
 				else { // Do not auto modify the image name. Do not upload the image and display an error to the user.
 					if (file_exists($imagePath)){
-						echo "<p class='alert alert-danger'>ALERT 4: An image with the name <strong>" . $imageName . "</strong> already exists.</p>";
+						echo "<p class='alert alert-danger'>Error 25: An image with the file name <strong>" . $imageName . "</strong> already exists.</p>";
 						$uploadOk = 0;
 					}
 				}
@@ -191,7 +210,7 @@ include 'includes/phpqrcode/qrlib.php';
 				
 				// CHECK #3: Check file size - unit is in bytes (5MB).
 				if ($_FILES["fileToUpload"]["size"] > 5000000){
-					echo "<p class='alert alert-danger'>ALERT 5: Your image is above the 5MB limit.</p>";
+					echo "<p class='alert alert-danger'>Error 30: Your image is above the 5MB limit.</p>";
 					$uploadOk = 0;
 				}
 				
@@ -199,23 +218,24 @@ include 'includes/phpqrcode/qrlib.php';
 				// CHECK #4: Limit the type of file formats.
 				$imageFileType = pathinfo($imagePath, PATHINFO_EXTENSION);
 				if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"){
-					echo "<p class='alert alert-danger'>ALERT 6: Only JPG, JPEG, and PNG images are allowed.</p>";
+					echo "<p class='alert alert-danger'>Error 35: Only JPG, JPEG, and PNG images are allowed.</p>";
 					$uploadOk = 0;
 				}
 				
 				
 				// Check if $uploadOk has been set to 0 by an error.
 				if ($uploadOk === 0){
-					echo "<p class='alert alert-danger'>ALERT 7: Your image was not uploaded.</p>";
+					echo "<p class='alert alert-danger'>Error 40: Your image was not uploaded.</p>";
 				}
 				else{ // If everything is ok, try to upload file.
 					if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imagePath)){
-						// No need to tell the user this succeeded, only if it failed.
-						//echo "<p>The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.</p>";
+						if($debugAlerts)
+							echo "<p class='alert alert-success'>Debug Alert 25: The image file <strong>" . basename($_FILES["fileToUpload"]["name"]) . "</strong> has been uploaded.</p>";
 					} 
 					else {
-						echo "<p class='alert alert-danger'>ALERT 8: There was an error uploading your image.</p>";
-						echo "<p class='alert alert-danger'>ALERT 9: " . $_FILES["fileToUpload"]["error"] . " There was an error uploading your image.</p>";
+						echo "<p class='alert alert-danger'>Error 45: An error occurred while attempting to upload your image</p>";
+						if($debugAlerts)
+							echo "<p class='alert alert-danger'>Debug Alert 30: An error occurred during move_uploaded_file:<br>" . $_FILES["fileToUpload"]["error"] . "</p>";
 					}
 				}
 			}
