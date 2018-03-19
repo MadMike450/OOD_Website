@@ -1,5 +1,5 @@
 <?php
-include 'functions/general.php';
+include 'includes/functions.php';
 
 // Connect to the database
 $conn = db_connector();

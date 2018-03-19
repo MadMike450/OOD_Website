@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'includes/header.php';
-include 'includes/general.php';
+include 'includes/functions.php';
 ?>
 
 <!DOCTYPE html>

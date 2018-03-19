@@ -1,5 +1,5 @@
 <?php
-include 'includes/general.php';
+include 'includes/functions.php';
 
 sleep(1);
 

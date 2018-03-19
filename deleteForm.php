@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'includes/general.php';
+include 'includes/functions.php';
 //include 'deleteConfirm.php';
 
 // Connect to the database

@@ -5,7 +5,7 @@ session_start();
 <html lang="en">
 <?php 
 include 'includes/header.php';
-include 'includes/general.php';
+include 'includes/functions.php';
 
 // Connect to the database
 $conn = db_connector();
