@@ -3,6 +3,7 @@ session_start();
 include 'includes/header.php';
 include 'includes/functions.php';
 include 'includes/modalScript.php';
+include 'includes/detailModal.php';
 
 // Connect to the database
 $conn = db_connector();
@@ -128,11 +129,6 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 			</nav>
 			
 			
-		<!----------------modal pop up with details------------------->
-		<?php 
-		include('detailModal.php');
-		?>
-		
 		</div>
 	</div>
 </div>

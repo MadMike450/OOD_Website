@@ -3,6 +3,7 @@ session_start();
 include 'includes/header.php';
 include 'includes/functions.php';
 include 'includes/modalScript.php';
+include 'includes/detailModal.php';
 ?>
 
 <!DOCTYPE html>
@@ -99,8 +100,6 @@ include 'includes/modalScript.php';
 					?>
 				</table>
 			</div>
-			<!----------------modal pop up with details------------------->
-			<?php include('detailModal.php'); ?>
 		</div>
 		
 		<nav>
