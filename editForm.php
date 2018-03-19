@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'includes/header.php';
-include 'functions/general.php';
+include 'includes/general.php';
 
 // gets the passed variable $edit and stores it into $id 
 $id = $_GET['edit'];    

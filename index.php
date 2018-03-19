@@ -1,6 +1,6 @@
 <?php
 include 'includes/header.php';
-include 'functions/general.php';
+include 'includes/general.php';
 
 // Connect to the database
 $conn = db_connector();

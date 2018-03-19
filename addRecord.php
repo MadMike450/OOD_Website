@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'includes/header.php';
-include 'functions/general.php';
+include 'includes/general.php';
 include 'includes/phpqrcode/qrlib.php';
 ?>
 
@@ -95,7 +95,7 @@ include 'includes/phpqrcode/qrlib.php';
 				// SQL query fail.
 				// New Feature: create a log file and write these kind of technical errors to the log.  Then just display an error saying to contact your systems administrator.
 				if($debugAlerts)
-					echo "<p class='alert alert-danger'>Debug Alert 5: SQL query failed.  The record was not uploaded." . <br> . $sql . "<br>" . mysqli_error($conn) . "</p>";
+					echo "<p class='alert alert-danger'>Debug Alert 5: SQL query failed.  The record was not uploaded." . "<br>" . $sql . "<br>" . mysqli_error($conn) . "</p>";
 				echo "<p class='alert alert-danger'>Error 5: The record was not uploaded.</p>";
 				$uploadOk = 0;
 			}

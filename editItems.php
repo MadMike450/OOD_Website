@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'includes/header.php';
-include 'functions/general.php';
+include 'includes/general.php';
 include 'includes/modalScript.php';
 
 // Connect to the database
