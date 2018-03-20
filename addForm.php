@@ -49,70 +49,92 @@ include 'includes/functions.php';
 			<!-- product info form -->
 			<div class="row">
 				<div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-bottom:10px">
-					<form class="form-horizontal" action="addRecord.php" method="POST" enctype="multipart/form-data" id="addItem"/>
+					<form id="addItem" class="form-horizontal" action="addRecord.php" method="POST" enctype="multipart/form-data" >
+						
 						<div class="form-group">
-							<label for="title">Title:</label><input class="form-control" type="text" id="title" name="title" required/>
+							<label for="title">Title:</label>
+							<input type="text" id="title" class="form-control" name="title" required />
 						</div>
+						
 						<div class="form-group">
-							<label for="price">Price:  </label><br><input class="form-control" id="price" type="text" name="price"/ required>
+							<label for="price">Price:</label>
+							<input type="text" id="price" class="form-control" name="price" required />
 						</div>
+						
 						<div class="form-group">
-							<label for="short">Short Description: </label>
-							<textarea class="form-control" id="short" class="" cols="40" rows="3" name="short" form="addItem" required></textarea>
+							<label for="short">Short Description:</label>
+							<textarea id="short" class="form-control" name="short" cols="40" rows="3" required></textarea>
 						</div>
+						
 						<div class="form-group">
-							<label for="detailed">Detailed Description: </label>
-							<textarea class="form-control" id="detailed" cols="40" rows="5" name="detailed" form="addItem"></textarea>
+							<label for="detailed">Detailed Description:</label>
+							<textarea id="detailed" class="form-control" name="detailed" cols="40" rows="5"></textarea>
 						</div>
+						
 						<div class="form-group">
-							<label for="qr">QR Code Title:</label><input class="form-control" id="qr" type="text" name="qrtitle" required/>
+							<label for="qr">QR Code Title:</label>
+							<input type="text" id="qr" class="form-control" name="qrtitle" required />
 						</div>
+						
 						<div class="form-group">
-							<input style="margin:20px; margin-left:0px" type="file" name="fileToUpload" id="fileToUpload">
+							<input type="file" id="fileToUpload" name="fileToUpload" style="margin:20px; margin-left:0px" />
 						</div>
+						
 						<div class="form-group">
 							<div class="row">
 								<div class="col-lg-6">
 									<label for="qr">Tag Name:</label>
 									<div class="input-group">
-										<input type="text" class="form-control" type="text" id="itemTag" name="itemTag" aria-label="...">
+										
+										<input type="text" id="itemTag" class="form-control" name="itemTag" />
 										
 										<div class="input-group-btn">
-											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-expanded="true">
+											
+											<button type="button" id="dropdownMenu" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 												Tags
 												<span class="caret"></span>
 											</button>
+											
 											<ul class="dropdown-menu pull-right" role="menu">
 												<?php while($itemTag = mysqli_fetch_assoc($results)){ ?>
-													<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:return false;"><?php echo $itemTag['itemTag']; ?></a></li>
+													<li role="presentation"><a role="menuitem" href="javascript:return false;" onclick="selectTag()" tabindex="-1"><?php echo $itemTag['itemTag']; ?></a></li>
 												<?php } ?>
 											</ul>
+										
 										</div><!-- btn-group -->
 									</div><!-- input-group -->
 								</div><!-- col-lg-6 -->
 							</div><!-- row -->
 						</div><!--form-group-->	
+						
 						<div class="form-group">
-							<input class="btn btn-info pull-left" type="submit" value="Submit">
+							<input type="submit" class="btn btn-info pull-left" value="Submit" />
 						</div>
+					
 					</form>	
 				</div><!-- col -->
 			</div><!-- row -->
 		</div><!-- container -->
 	</div><!-- main -->
 
-	
-<!-- Populate itemTag field with selected value from dropdown menu -->
-<script src="jquery/jquery.js"></script>
-<script type="text/javascript" src='js/bootstrap.min.js'></script>
-<script>
-$(".dropdown-menu li a").click(function(){
-  var selText = $(this).text();
-  document.getElementById("itemTag").value=selText;
+<script type="text/javascript">
+$(function(){
+  
+  $(".dropdown-menu pull-right li a").click(function(){
+    
+    $("#itemTag").text($(this).text());
+     $("#itemTag").val($(this).text());
+  });
+
 });
+
+
+//function selectTag() {
+//  var selText = (this).value;
+//  document.getElementById("itemTag").value=selText;
+//}
 </script>
 
-<link rel="stylesheet" href="css/bootstrap.css" />
 </div>
 
 <?php include 'includes/footer.php';?>
