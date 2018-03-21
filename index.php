@@ -65,12 +65,18 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 						<div class="col-xs-12 col-sm-6 col-md-4">
 							<div class="row">
 								<div class="col-sm-12">
-									<?php echo "<td><center><img style='margin-top:20px' class='img-responsive' alt='Brand' style='max-height: 150px' src='" . $result['imagePath'] . "'></center></td>";?>
+									<td>
+										<center>
+											<a href="./displayItem.php?productID=<?php echo $result['productID']; ?>" >
+												<img class="img-responsive" alt="Brand" style="max-height:150px;margin-top:20px" src="<?php echo $result['imagePath']; ?>" />
+											</a>
+										</center>
+									</td>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12">
-									<?php echo "<td><center><a href=/displayItem.php?productID=" . $result['productID'] . '>' . $result['title'] .  "</a></center></td>";?>
+									<?php echo "<td><center><a href=displayItem.php?productID=" . $result['productID'] . ">" . $result['title'] .  "</a></center></td>";?>
 								</div>	
 							</div>
 						</div>

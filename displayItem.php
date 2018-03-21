@@ -12,7 +12,7 @@ include 'includes/functions.php';
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="index.php?page=1">
-					<img class="img-responsive"  alt="Brand" src="./images/logo.jpg" width="100px" >
+					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px" />
 				</a>
 			</div>
 			<a class="btn btn-default pull-right navbar-btn" href="./index.php?page=1">Home</a>
@@ -42,23 +42,28 @@ include 'includes/functions.php';
 					if ($result->num_rows > 0) {
 						// output data of each row
 						while($row = $result->fetch_assoc()) {
-							
-							// related items will be related.php variable is rel
-							echo"<div class='row'><center>";
-							echo"<div class='box-icon'>";
-							echo"<img class='img-responsive' alt='Brand' src='" . $row["imagePath"] . "'> ";
-							echo"</center></div>";
-							echo"</div>";
-							echo"<div class='row'>";
-							echo"<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3'>";
-							echo"<div class='box'>";
-							echo"<div class='info'>";
-							echo"<h4 class='text-center'>" . $row["title"] . "</h4>";
-							echo"<h6 class='text-center'>$" . $row["price"] . "</h6>";
-							echo"<h6 class='text-center'>" . $row["shortDesc"] . "</h6>";
-							echo"<p>" . $row["longDesc"] . "</p>";
-							echo"<a class='btn btn-small btn-success' href=/related.php?rel='"  . urlencode($row["itemTag"]) . "'&productID=" . urlencode($row['productID']) . "> Related Items  <span class='glyphicon glyphicon-search' aria-hidden='true'></span></a>";
-							echo"</div></div></div>";
+					?>
+					
+							<!-- related items will be related.php variable is rel -->
+							<div class='row'>
+								<div class='box-icon'>
+									<center><img class='img-responsive' alt='Brand' src='<?php echo $row["imagePath"] ?>' /></center>
+								</div>
+							</div>
+							<div class='row'>
+								<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3'>
+									<div class='box'>
+										<div class='info'>
+											<h4 class='text-center'><?php echo $row["title"] ?></h4>
+											<h6 class='text-center'>$<?php echo $row["price"]?></h6>
+											<h6 class='text-center'><?php echo $row["shortDesc"]?></h6>
+											<p><?php echo $row["longDesc"]?></p>
+											<a class='btn btn-small btn-success' href=/related.php?rel='"  . urlencode($row["itemTag"]) . "'&productID=" . urlencode($row['productID']) . "> Related Items  <span class='glyphicon glyphicon-search' aria-hidden='true'></span></a>
+										</div>
+									</div>
+								</div>
+					
+					<?php	
 						}	
 					} 
 					else {
