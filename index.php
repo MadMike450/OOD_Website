@@ -54,41 +54,33 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 				</p>
 			</div>
 			
+			
 			<!-- Product info form -->
+			<?php
+			//Columns must be a factor of 12 (1,2,3,4,6,12)
+			$numOfCols = 3;
+			$rowCount  = 0;
+			$bootstrapColWidth = 12 / $numOfCols;
+			?>
 			<div class="row">
-				<!--<div class="col-xs-12" style="margin-bottom:10px">-->
 				<?php foreach($results as $result): ?>
-				
-				<div class="result">
-					<form class="form-inline" action="displayItem.php" method="GET" enctype="multipart/form-data" id="displayItem">
-						<!-- <div class="table"> -->
-						<div class="col-xs-12 col-sm-6 col-md-4">
-							<div class="row">
-								<div class="col-sm-12">
-									<td>
-										<center>
-											<a href="./displayItem.php?productID=<?php echo $result['productID']; ?>" >
-												<img class="img-responsive" alt="Brand" style="max-height:150px;margin-top:20px" src="<?php echo $result['imagePath']; ?>" />
-											</a>
-										</center>
-									</td>
-								</div>
+				<div class="col-md-<?php echo $bootstrapColWidth; ?>"> <!-- <div class="col-xs-12 col-sm-6 col-md-4"> -->
+					<div class="thumbnail">
+						<a href="./displayItem.php?productID=<?php echo $result['productID']; ?>" >
+							<img class="img-responsive" alt="ADD RESULTS TITLE" src="<?php echo $result['imagePath']; ?>" />
+													
+							<div class="caption">
+								<?php echo "<center>" . $result['title'] .  "</center>";?>
 							</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<?php echo "<td><center><a href=displayItem.php?productID=" . $result['productID'] . ">" . $result['title'] .  "</a></center></td>";?>
-								</div>	
-							</div>
-						</div>
-						<!-- </div> -->
-					</form>
+						</a>
+					</div>
 				</div>
-				
 				<?php
+					$rowCount++;
+					if($rowCount % $numOfCols == 0) echo '</div><div class="row">';
 				endforeach;
 				mysqli_free_result($results);
 				?>
-				<!-- </div> -->
 			</div>	
 			
 			
