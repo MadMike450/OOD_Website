@@ -158,7 +158,7 @@ include 'includes/phpqrcode/qrlib.php';
 				}
 				
 				// CHECK #1: Check if image file is actually an image.
-				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]); // this will throw an error after refreshing the browser. handle somehow.
 				if($check !== false){
 					if($debugAlerts)
 						echo "<p class='alert alert-success'>Debug Alert 15: File is an image - <strong>" . $check["mime"] . "</strong></p>";
@@ -246,18 +246,40 @@ include 'includes/phpqrcode/qrlib.php';
 	
 	
 	<!-- Display QR code and Download QR Code button -->
-	<?php
-	if ($QRCodeCreated === 1){
-		echo "<div class='row'><center><img class='img-responsive' alt='Brand' src=$QRCodePath width='200px'></center></div>";
-		echo "<center><a class='btn btn-warning' style='margin:10px' href='./" . $QRCodePath . "' download><span class='glyphicon glyphicon-qrcode' aria-hidden='true'></span> Download QR Code</a></center>";
-	}
-	else{
-		echo "<center><a class='btn btn-warning disabled' style='margin:10px' href=''><span class='glyphicon glyphicon-qrcode' aria-hidden='true'></span> Download QR Code</a></center>";
-	}
-	?>
+	<?php if ($QRCodeCreated === 1){ ?>	
+		<div class='row'>
+			<div class='text-center'>
+				<img alt='QR Code: <?php echo $QRCodeName; ?>' title='QR Code: <?php echo $QRCodeName; ?>' src='<?php echo $QRCodePath; ?>' width='200px'>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='text-center'>
+				<a class='btn btn-warning' style='margin:10px' href='./" . $QRCodePath . "' download>
+					<span class='glyphicon glyphicon-qrcode' aria-hidden='true'></span> 
+					Download QR Code
+				</a>
+			</div>
+		</div>
+	<?php }	else{ ?>
+		<div class='row'>
+			<div class='text-center'>
+				<a class='btn btn-warning disabled' style='margin:10px' href=''>
+					<span class='glyphicon glyphicon-qrcode' aria-hidden='true'></span>
+					Download QR Code
+				</a>
+			</div>
+		</div>
+	<?php } ?>
 	
 	<!-- Display Add Another Item button -->
-	<center><a class="btn btn-success" style="margin:10px" href="addForm.php"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Another Item</a></center>
+	<div class='row'>
+		<div class='text-center'>
+			<a class="btn btn-success" style="margin:10px" href="addForm.php">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				Add Another Item
+			</a>
+		</div>
+	</div>
 	
 	<!-- 
 	New Feature:

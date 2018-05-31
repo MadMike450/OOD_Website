@@ -47,7 +47,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 	<div id="main">
 		<div class="container">
 			
-			<h3>Welcome to our shop!</h3>
+			<h3>Welcome to Our Online Store!</h3>
 			<div class="jumbotron">
 				<p style="font-size:16px"> 
 					Use a QR code scanner on your phone to scan the items and learn more about them.  If you don't have a phone or don't have a QR scanner installed, see us at the register.  We will kindly provide you with an iPod with a scanner installed.  Happy shopping!
@@ -92,29 +92,29 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 						<!--- Set up the Previous button --->
 						<li>
 							<?php if($currentPage > 1 && $totalPages > 0): ?>
-							<a href="?page=<?php echo $prevPage ?>&per-page=<?php echo $perPage ?>" aria-label="Previous">
-								<span aria-hidden="false">&laquo;</span>
-							</a>
+								<a href="?page=<?php echo $prevPage ?>&per-page=<?php echo $perPage ?>" aria-label="Previous">
+									<span aria-hidden="false">&laquo;</span>
+								</a>
 							<?php else: ?>
-							<span class="disabled" aria-hidden="true">&laquo;</span>
+								<span class="disabled" aria-hidden="true">&laquo;</span>
 							<?php endif; ?>
 						</li>
 						
 						<!-- Set up each individual page button -->
 						<?php for($x = 1; $x <= $totalPages; $x++): ?>
-						<li <?php if($currentPage === $x): ?> class="active"<?php endif; ?> >
+							<li <?php if($currentPage === $x): ?> class="active"<?php endif; ?> >
 							<a href="?page=<?php echo $x ?>&per-page=<?php echo $perPage; ?>" >
 								<?php echo $x ?>
 							</a>
-						</li>
+							</li>
 						<?php endfor; ?>
 						
 						<!-- Set up the Next button -->
 						<li>
-							<?php if($currentPage < $totalPages - 1 && $totalPages > 0): ?>
-							<a href="?page=<?php echo $nextPage ?>&per-page=<?php echo $perPage ?>" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
+							<?php if($currentPage < $totalPages && $totalPages > 0): ?>
+								<a href="?page=<?php echo $nextPage ?>&per-page=<?php echo $perPage ?>" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
 							<?php else: ?>
 							<span class="disabled" aria-hidden="true">&raquo;</span>
 							<?php endif; ?>
