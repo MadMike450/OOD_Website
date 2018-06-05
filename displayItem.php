@@ -15,7 +15,7 @@ include 'includes/functions.php';
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			
@@ -76,7 +76,7 @@ include 'includes/functions.php';
 											<h6 class='text-center'>$<?php echo $row["price"]?></h6>
 											<h6 class='text-center'><?php echo $row["shortDesc"]?></h6>
 											<p><?php echo $row["longDesc"]?></p>
-											<a class='btn btn-small btn-success' href=/related.php?rel='"  . urlencode($row["itemTag"]) . "'&productID=" . urlencode($row['productID']) . "> Related Items  <span class='glyphicon glyphicon-search' aria-hidden='true'></span></a>
+											<a class="btn btn-small btn-success" href="/related.php?rel=<?php echo urlencode($row['itemTag']); ?>&productID=<?php echo urlencode($row['productID']); ?>">Related Items</a>
 										</div>
 									</div>
 								</div>

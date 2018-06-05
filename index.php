@@ -39,7 +39,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			
@@ -86,8 +86,8 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 						<a href="./displayItem.php?productID=<?php echo $result['productID']; ?>" >
 							<img class="img-responsive" alt="ADD RESULTS TITLE" src="<?php echo $result['imagePath']; ?>" />
 													
-							<div class="caption">
-								<?php echo "<center>" . $result['title'] .  "</center>";?>
+							<div class="caption text-center">
+								<?php echo $result['title']; ?>
 							</div>
 						</a>
 					</div>
@@ -98,7 +98,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 				endforeach;
 				mysqli_free_result($results);
 				?>
-			</div>	
+			</div>
 			
 			
 			<!--- Pagination - page navigation bar --->

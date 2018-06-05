@@ -16,7 +16,7 @@ include 'includes/functions.php';
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			
@@ -47,8 +47,8 @@ include 'includes/functions.php';
 					// Connect to the database
 					$conn = db_connector();
 					
-					if (isset($_GET['del'])) {
-						$id       = $_GET['del'];
+					if (isset($_GET['productID'])) {
+						$id       = $_GET['productID'];
 						$imageSql = "SELECT imagePath, qrCodePath
 									 FROM 	products
 									 WHERE 	productID = " . $id;

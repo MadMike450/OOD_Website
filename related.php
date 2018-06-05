@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'includes/functions.php';
 
 // Connect to the database
@@ -12,7 +13,7 @@ $perPage	= 	isset($_GET['per-page']) && $_GET['per-page'] <= 10 ? (int)$_GET['pe
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
 $itemTag    = $_GET['rel'];
-$prevProdID = $_GET['productID'];
+$origProdID = $_GET['productID'];
 $noRelated  = FALSE;
 
 if($itemTag == "''"){
@@ -23,8 +24,8 @@ else{
 	//Query
 	$sql = "SELECT  SQL_CALC_FOUND_ROWS *
 			FROM	products	
-			WHERE	itemTag = $itemTag
-					AND productID <> $prevProdID
+			WHERE	itemTag = '$itemTag'
+			AND     productID <> '$origProdID'
 			LIMIT	{$start}, {$perPage}";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) == 0){
@@ -48,17 +49,33 @@ include 'includes/header.php';
 ?>
 
 <div id="wrap">
-	<!-- header logo and buttons -->
+	
+	<!-- NEW header logo, header buttons, and session -->
 	<nav class="navbar navbar-default">
 		<div class="container">
+			
 			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+				<a class="navbar-brand" href="./index.php?page=1">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
-			<?php echo "<a class='btn btn-default pull-left navbar-btn' href='./displayItem.php?productID=$prevProdID'>Back</a>" ?>
-			<a class="btn btn-default pull-right navbar-btn" href="./index.php?page=1">Home</a>
-			<!-- button position -->
+			
+			<?php if (isset($_SESSION['username'])){ ?>
+				<p class='navbar-text'>Logged in as: <?php echo strtoupper($_SESSION['username']); ?></p>
+				
+				<a class="btn btn-default pull-left navbar-btn" href="./index.php?page=1">Home</a>
+				<a class="btn btn-default pull-left navbar-btn" href="./dashboard.php">Dashboard</a>
+				<a class="btn btn-default pull-left navbar-btn" href="./displayItem.php?productID=<?php echo $origProdID; ?>">Back</a>
+				<a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a>
+			<?php } else{ ?>
+				<a class="btn btn-default pull-left navbar-btn" href="./index.php?page=1">Home</a>
+				<a class="btn btn-default pull-left navbar-btn" href="./displayItem.php?productID=<?php echo $origProdID; ?>">Back</a>
+				<a class="btn btn-default pull-right navbar-btn" href="./loginPage.php">Log In</a>
+			
+			<?php	
+				//die ("You must be logged in!");
+			}
+			?>
 		</div>
 	</nav>
 	

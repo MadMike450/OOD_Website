@@ -15,7 +15,7 @@ include 'includes/phpqrcode/qrlib.php';
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			

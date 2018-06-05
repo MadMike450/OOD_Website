@@ -24,6 +24,14 @@ $totalItems = $conn->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total
 $totalPages = $totalItems > 0 ? ceil($totalItems/$perPage) : 0;
 $prevPage   = $currentPage <= $totalPages ? $currentPage - 1 : $totalPages;
 $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
+
+
+//Get current page number in URL parameter.
+parse_str($_SERVER['QUERY_STRING'], $queryString);
+$fromPageNum = $queryString['page'];
+
+//Get the current page name in the URL
+$fromPage = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
 
@@ -41,7 +49,7 @@ include 'includes/header.php';
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			
@@ -78,10 +86,13 @@ include 'includes/header.php';
 								<div class="result">
 									<form class="form-inline" action="deleteItem.php" method="GET" enctype="multipart/form-data" id="deleteItem"/>
 										<tr>
-											<?php
-											echo "<td><a href=/deleteItem.php?productID=" . $result['productID'] . '>' . $result['title'] .  "</a></td>";
-											echo "<td><a class='btn btn-small btn-danger pull-right' href='deleteConfirm.php?del=$result[productID]'>Delete</a></td>";
-											?>
+											<td>
+												<a href="/deleteItem.php?productID=<?php echo $result['productID']; ?>&fromPage=<?php echo $fromPage; ?>&fromPageNum=<?php echo $fromPageNum; ?>"><?php echo $result['title']; ?></a>
+											</td>
+											<td>
+												<a class="btn btn-small btn-danger pull-right" href="/deleteConfirm.php?productID=<?php echo $result['productID']; ?>&fromPage=<?php echo $fromPage; ?>&fromPageNum=<?php echo $fromPageNum; ?>">Delete</a>
+											</td>
+											
 										</tr>
 									</form>
 								</div>
@@ -121,7 +132,7 @@ include 'includes/header.php';
 					
 					<!-- Set up the Next button -->
 					<li>
-						<?php if($currentPage < $totalPages - 1 && $totalPages > 0): ?>
+						<?php if($currentPage < $totalPages && $totalPages > 0): ?>
 						<a href="?page=<?php echo $nextPage ?>&per-page=<?php echo $perPage ?>" aria-label="Next">
 							<span aria-hidden="true">&raquo;</span>
 						</a>

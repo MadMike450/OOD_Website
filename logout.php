@@ -16,7 +16,7 @@ $statusMsg = $logoutOK ? "You have been successfully logged out" : "Something we
 	<div id="main">
 		<div class="container">
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-md-offset-4" style="margin-bottom:10px">
+				<div class="col-xs-10 col-sm-8 col-md-6 col-lg-6 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 col-lg-offset-3" style="margin-bottom:10px">
 					<?php
 					if ($logoutOK){
 						echo "<ul><h3 class='text-center alert alert-success'>" . $statusMsg . "</h3></ul>";
@@ -38,5 +38,4 @@ $statusMsg = $logoutOK ? "You have been successfully logged out" : "Something we
 		</div>
 	</div>
 </div>
-
 <?php include 'includes/footer.php';?>

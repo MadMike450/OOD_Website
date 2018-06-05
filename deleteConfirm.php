@@ -2,7 +2,13 @@
 session_start();
 include 'includes/header.php';
 
-$productID = $_GET['del'];
+$productID = $_GET['productID'];
+
+//Get the page name we just came from.
+$returnPage = $_GET['fromPage'];
+
+//Get the original page number we came from on deleteForm page.
+$returnPageNum = isset($_GET['fromPageNum']) ? $_GET['fromPageNum'] : 'X';
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +22,7 @@ $productID = $_GET['del'];
 			
 			<div class="navbar-header">
 				<a class="navbar-brand" href="./index.php?page=1">
-					<img class="img-responsive" alt="Brand" src="./images/logo.jpg" width="100px">
+					<img class="img-responsive" alt="Business Logo" src="./images/logo.jpg" width="100px">
 				</a>
 			</div>
 			
@@ -42,9 +48,15 @@ $productID = $_GET['del'];
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-sm-offset-3 col-md-offset-3" style="margin-bottom:10px">
-					<ul><h4 class='text-center alert alert-warning'>Are you sure you want to delete this item?</h4></ul>
-					<?php echo "<ul><a href='deleteRecord.php?del=" . $productID . "'class='btn btn-danger btn-lg btn-huge btn-block'>Delete</a></ul>"; ?>
-					<ul><a href="deleteForm.php" class="btn btn-default btn-lg btn-huge btn-block">Cancel</a></ul>
+					<ul>
+						<h4 class='text-center alert alert-warning'>Are you sure you want to delete this item?</h4>
+					</ul>
+					<ul>
+						<a href="deleteRecord.php?productID=<?php echo $productID; ?>" class="btn btn-danger btn-lg btn-huge btn-block">Delete</a>
+					</ul>
+					<ul>
+						<a class="btn btn-default btn-lg btn-huge btn-block" href="<?php echo $returnPage; ?>?productID=<?php echo $productID; ?>&page=<?php echo $returnPageNum; ?>&fromPageNum=<?php echo $returnPageNum; ?>">Cancel</a>
+					</ul>
 				</div>
 			</div>
 		</div>
