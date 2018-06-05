@@ -234,8 +234,10 @@ include 'includes/phpqrcode/qrlib.php';
 				}
 				else{ // If everything is ok, try to upload file.
 					if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imagePath)){
-						if($debugAlerts)
-							echo "<p class='alert alert-success'>Debug Alert 25: The image file <strong>" . basename($_FILES["fileToUpload"]["name"]) . "</strong> has been uploaded.</p>";
+						if($debugAlerts) 
+							?>
+							<p class="alert alert-success">Debug Alert 25: The image file <strong><?php echo isset($newFilename) ? $newFilename : basename($_FILES['fileToUpload']['name']); ?></strong> has been uploaded.</p>
+							<?php
 					} 
 					else {
 						echo "<p class='alert alert-danger'>Error 45: An error occurred while attempting to upload your image</p>";

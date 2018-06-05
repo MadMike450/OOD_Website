@@ -201,7 +201,9 @@ $conn = db_connector();
 							if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $imagePath)){
 								// This alert is kind of necessary when doing an EDIT because it will say 0 rows updated if the only thing you updated is the image. This would
 								//    would be very misleading to the end users. Now at least it will inform them the image uploaded successfully.
-								echo "<p class='text-center alert alert-success'>The new image file <strong>" . $nImageName . "</strong> has been uploaded successfully.</p>";
+								?>
+								<p class="text-center alert alert-success">The new image file <strong><?php echo isset($newFilename) ? $newFilename : $nImageName; ?></strong> has been uploaded successfully.</p>
+								<?php
 							} 
 							else {
 								echo "<p class='text-center alert alert-danger'><strong>Programmer Error 8: </strong>There was an error uploading your file.</p>";
@@ -220,7 +222,7 @@ $conn = db_connector();
 						// Execute sqlUpdateRow
 						if (mysqli_query($conn, $sqlUpdateRow)){
 							// SQL query executed successfully
-							echo "<p class='text-center alert alert-success'>Total rows updated: " . $conn->affected_rows . "</p>";
+							echo "<p class='text-center alert alert-success'>Total rows updated: " . $conn->affected_rows . " (This does not count for image updates)</p>";
 						}
 						else {
 							// SQL query fail

@@ -62,7 +62,7 @@ include 'includes/functions.php';
 						while($row = $result->fetch_assoc()) {
 					?>
 					
-							<!-- related items will be related.php variable is rel -->
+							<!-- related items will be displayRelated.php variable is rel -->
 							<div class='row'>
 								<div class='box-icon'>
 									<center><img class='img-responsive' alt='Brand' src='<?php echo $row["imagePath"] ?>' /></center>
@@ -76,7 +76,7 @@ include 'includes/functions.php';
 											<h6 class='text-center'>$<?php echo $row["price"]?></h6>
 											<h6 class='text-center'><?php echo $row["shortDesc"]?></h6>
 											<p><?php echo $row["longDesc"]?></p>
-											<a class="btn btn-small btn-success" href="/related.php?rel=<?php echo urlencode($row['itemTag']); ?>&productID=<?php echo urlencode($row['productID']); ?>">Related Items</a>
+											<a class="btn btn-small btn-success" href="/displayRelated.php?rel=<?php echo urlencode($row['itemTag']); ?>&productID=<?php echo urlencode($row['productID']); ?>">Related Items</a>
 										</div>
 									</div>
 								</div>
