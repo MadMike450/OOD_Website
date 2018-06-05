@@ -1,11 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
 <?php 
 session_start();
 include 'includes/header.php';
 include 'includes/functions.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
 <div id="wrap">
 	<!-- NEW header logo, header buttons, and session -->

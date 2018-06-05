@@ -1,10 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <?php 
 session_start();
 include 'includes/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
 
 <div id="wrap">
 

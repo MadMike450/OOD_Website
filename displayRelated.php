@@ -1,5 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php
 session_start();
+include 'includes/header.php';
 include 'includes/functions.php';
 
 // Connect to the database
@@ -36,17 +42,9 @@ else{
 $total = $conn->query("SELECT FOUND_ROWS() as total")->fetch_assoc()['total'];
 
 $pages = ceil($total/$perPage);
-
-
-
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<?php 
-include 'includes/header.php';
-?>
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	

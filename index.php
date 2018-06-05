@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php
 session_start();
 include 'includes/header.php';
@@ -26,11 +31,8 @@ $totalPages = $totalItems > 0 ? ceil($totalItems/$perPage) : 0;
 $prevPage   = $currentPage <= $totalPages ? $currentPage - 1 : $totalPages;
 $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 ?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">	
+	
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	<!-- NEW header logo, header buttons, and session -->

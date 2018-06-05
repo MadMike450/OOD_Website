@@ -1,7 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php
 session_start();
-
-include 'includes\functions.php';
+include 'includes/header.php';
+include 'includes/functions.php';
 
 $errorMsg = "";
 
@@ -104,12 +109,7 @@ mysqli_close($conn);
 
 ?>
 
-
-
-<?php include 'includes/header.php'; ?>
-
-<!DOCTYPE html>
-<html lang="en">
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	<div class="container">

@@ -2,12 +2,8 @@
 <html lang="en">	
 <body>
 <!-- Use this page for simple code test -->
-
-<?php
-$x = "Hello world!";
-$x = null;
-echo isset($x) ? 1 : 0;
-?> 
-
+<?php $username = 'michael';
+echo "<p>Logged in as: strtoupper({$username})</p>"
+?>
 </body>
 <html>

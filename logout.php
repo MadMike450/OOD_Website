@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php 
 session_start();
 include 'includes/header.php';
@@ -9,8 +14,7 @@ $statusMsg = $logoutOK ? "You have been successfully logged out" : "Something we
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en"> 
+<!-- --------------------------------------------------------------------------------------- -->
  
 <div id="wrap">
 	<div id="main">
