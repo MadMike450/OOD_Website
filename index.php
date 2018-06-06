@@ -86,7 +86,7 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 				<div class="col-md-<?php echo $bootstrapColWidth; ?>"> <!-- <div class="col-xs-12 col-sm-6 col-md-4"> -->
 					<div class="thumbnail">
 						<a href="./displayItem.php?productID=<?php echo $result['productID']; ?>" >
-							<img class="img-responsive" alt="ADD RESULTS TITLE" src="<?php echo $result['imagePath']; ?>" />
+							<img class="img-responsive" alt="Product Image" src="<?php echo $result['imagePath']; ?>" />
 													
 							<div class="caption text-center">
 								<?php echo $result['title']; ?>

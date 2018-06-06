@@ -1,12 +1,13 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+
+
+<?php
+session_start();
 include 'includes/header.php';
 include 'includes/functions.php';
 ?>
+
 
 <div id="wrap">
 	

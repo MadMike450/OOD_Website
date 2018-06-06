@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php 
 session_start();
 include 'includes/header.php';
@@ -28,11 +33,15 @@ $totalPages = $totalItems > 0 ? ceil($totalItems/$perPage) : 0;
 $prevPage   = $currentPage <= $totalPages ? $currentPage - 1 : $totalPages;
 $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 
+//Get current page number in URL parameter.
+parse_str($_SERVER['QUERY_STRING'], $queryString);
+$fromPageNum = $queryString['page'];
 
+//Get the current page name in the URL
+$fromPage = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	<!-- NEW header logo, header buttons, and session -->
@@ -78,14 +87,25 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 					<?php
 						if ($results){
 							foreach($results as $result){
-								echo "<tr>";
-								echo "<td class='col-md-10'>".$result['title']."</td>";
-								/*echo "<td>".$result['price']."</td>";
-								echo "<td>".$result['productID']."</td>";
-								echo "<td>".$result['shortDesc']."</td>";*/
-								echo "<td class='col-md-1'><center><a href='#' class='btn btn-info edit-record' data-toggle='modal' data-target='#myModal' data-id=".$result['productID']."><span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></center></td>";
-								echo "<td class='col-md-1'><center><a class='btn btn-warning' href='editForm.php?edit=$result[productID]'>Edit</a></center></td>";
-								echo "</tr>";
+					?>
+								<tr>
+									<td class="col-md-10"><?php echo $result['title']; ?></td>
+									
+									<td class="col-md-1">
+										<center>
+											<a href="#" class="btn btn-info edit-record" data-toggle="modal" data-target="#myModal" data-id=".$result['productID'].">
+												<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+											</a>
+										</center>
+									</td>
+									
+									<td class="col-md-1">
+										<center>
+											<a class="btn btn-warning" href="editForm.php?productID=<?php echo $result['productID']; ?>&fromPage=<?php echo $fromPage; ?>&fromPageNum=<?php echo $fromPageNum; ?>">Edit</a>
+										</center>
+									</td>
+								</tr>
+					<?php
 							}//end foreach
 						}
 						$results->free();
@@ -139,4 +159,4 @@ $nextPage   = $currentPage > 0 ? $currentPage + 1 : 1;
 	</div>
 </div>
 
-<?php include 'includes/footer.php';?>
+<?php include 'includes/footer.php'; ?>

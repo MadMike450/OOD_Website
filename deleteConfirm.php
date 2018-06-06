@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php 
 session_start();
 include 'includes/header.php';
@@ -11,9 +16,8 @@ $returnPage = $_GET['fromPage'];
 $returnPageNum = isset($_GET['fromPageNum']) ? $_GET['fromPageNum'] : 'X';
 ?>
 
-<!DOCTYPE html>
-<html lang="en"> 
- 
+<!-- --------------------------------------------------------------------------------------- -->
+
 <div id="wrap">
 
 	<!-- NEW header logo, header buttons, and session -->

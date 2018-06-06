@@ -67,7 +67,7 @@ include 'includes/functions.php';
 							<!-- related items will be displayRelated.php variable is rel -->
 							<div class='row'>
 								<div class='box-icon'>
-									<center><img class='img-responsive' alt='Brand' src='<?php echo $row["imagePath"] ?>' /></center>
+									<center><img class='img-responsive' alt='Product Image' src='<?php echo $row["imagePath"] ?>' /></center>
 								</div>
 							</div>
 							<div class='row'>

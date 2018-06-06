@@ -1,10 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php 
 session_start();
 include 'includes/header.php';
 include 'includes/functions.php';
 
-// gets the passed variable $edit and stores it into $id 
-$id = $_GET['edit'];    
+$id = $_GET['productID']; 
+
+// This is the page number a back or cancel button will return you to.
+$returnPage = isset($_GET['fromPage']) ? $_GET['fromPage'] : 'X';
+
+// Get the original page number we came from on editItems page.
+$returnPageNum = isset($_GET['fromPageNum']) ? $_GET['fromPageNum'] : 'X';
 
 // Connect to the database
 $conn = db_connector();   
@@ -20,10 +30,10 @@ if ($productRecords = $conn->query($query)){
 // Retrieve the item tags.
 $sql = "SELECT DISTINCT itemTag FROM products";
 $itemTagArr = mysqli_query($conn, $sql);
-
 ?>
-<!DOCTYPE html>
-<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <div id="wrap">
 	
 	<!-- NEW header logo, header buttons, and session -->
@@ -41,7 +51,7 @@ $itemTagArr = mysqli_query($conn, $sql);
 				
 				<a class="btn btn-default pull-left navbar-btn" href="./index.php?page=1">Home</a>
 				<a class="btn btn-default pull-left navbar-btn" href="./dashboard.php">Dashboard</a>
-				<a class="btn btn-default pull-left navbar-btn" href="./editItems.php">Back</a>
+				<a class="btn btn-default pull-left navbar-btn" href="./editItems.php?page=1">Back</a>
 				<a class="btn btn-default pull-right navbar-btn" href="./logout.php">Log Out</a>
 			<?php } else{ ?>
 				<a class="btn btn-default pull-left navbar-btn" href="./index.php?page=1">Home</a>

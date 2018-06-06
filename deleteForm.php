@@ -1,7 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php
 session_start();
+include 'includes/header.php';
 include 'includes/functions.php';
-//include 'deleteConfirm.php';
+
 
 // Connect to the database
 $conn = db_connector();
@@ -34,12 +40,7 @@ $fromPageNum = $queryString['page'];
 $fromPage = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<?php 
-include 'includes/header.php';
-?>
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	

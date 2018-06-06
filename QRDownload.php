@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
 <?php 
 session_start();
 include 'includes/header.php';
@@ -6,8 +10,6 @@ include 'includes/modalScript.php';
 include 'includes/detailModal.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
 <div id="wrap">
 	

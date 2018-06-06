@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- --------------------------------------------------------------------------------------- -->
+
 <?php 
 session_start();
 include 'includes/header.php';
@@ -16,8 +21,7 @@ $returnPageNum = isset($_GET['fromPageNum']) ? $_GET['fromPageNum'] : 'X';
 $returnPage = isset($_GET['fromPage']) ? $_GET['fromPage'] : 'X';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- --------------------------------------------------------------------------------------- -->
 
 <div id="wrap">
 	
@@ -78,7 +82,7 @@ $returnPage = isset($_GET['fromPage']) ? $_GET['fromPage'] : 'X';
 							<div class="row">
 								<center>
 									<div class="box-icon">
-										<img class="img-responsive" alt="Brand" src="<?php echo $row['imagePath']; ?>">
+										<img class="img-responsive" alt="Product Image" src="<?php echo $row['imagePath']; ?>">
 									</div>
 								</center>
 							</div>
